@@ -1,0 +1,29 @@
+INTRODUCTION
+
+This algorithm will will analyze given time series data file for optimal phase and frequency to look at. For this, it uses algorithm proposed by K Smith, 2016.  It will calculate optimal phase and frequency that best matches the data and based on these optimal values of phase and frequency it will create a two diagnostic plots. One with model plotted over data to see how well the model created based on these optimal phase and frequency fits with the data. Another diagnostic plot creates a presto style time vs phase plot where each cycle of data are stacked to create a power spectrum folded plots. 
+
+WARNING! This code will remove any pre-existing files inside the target folder so if you have any files that you do not want to lose in your target folder either move them to separate folder or create a different folder to save the output files of this code.
+
+HOW THE CODE WORKS?
+
+Initially, this algorithm will do low-key search in small matrix of phase and frequency. This is done for computational efficiency. Rather than doing intense search in several different search space we first try to calculated the range of frequencies where the optimal values might fall by doing a low key search. Once we find the right range to look at, we do intensive search in that particular frequency range. Combined det stat vs frequency plot given by the code will guide us to tune our search space of frequency range. We can visually see the plot and pick the range where maximum detection statistics values lie and use that range. Here, i have automated the code to look within the range of 0.1*max value of detection statistics to 10*max value of detection statistics. But visualizing the plot this can be further narrowed down.  
+
+INPUTS
+
+This code takes two input argument. One is file path to where our times-seires data is located in our machine and another one is the target path where we want to save our diagnotic data and plots. This will print following parameters as an output.
+
+i) Range of frequency in which data is being searched
+ii) Lowest detection statistic value calculated by the algorithm. 
+iii) Initial approximate guess for optimal frequency
+iv) Final optimal values for phase and frequency calculated by the algorithm. 
+
+ HOW DO WE CALCULATE UPPER AND LOWER FREQUENCY BOUNDS TO SEARCH FOR?
+ 
+ In any time series data lowest frequency will be at least one signal within half the total time period of the data so lower frequency bound is given by 2/(total timeperiod).  Upper frequency, in principle, can be that signal shows up in every time interval in which we are recording the data. But practically this never happens especially when we are making observations for astronomical signal. So, we can assume some reasonable number of time interval in which signal might show up. Here, I have assumed that signal will show up once after every two time interval. This is very liberal assumption though. 
+ 
+ HOW TO MANUALLY FINE TUNE OUR SEARCH?
+ 
+ Currently, the code automatically picks the estimated optimal frequency and searches within (1/10) to 10 times of this optimal frequency range. However, this may not always be true depending upon the nature of timeseries data we have. This code will first do a low key search at several freuquency ranges and then combine them all into one single file.  'det_stat_plot.pdf' file we get as an ouput will show us the frequencies where maximum detection statistic values are likely to lie in. We can visually inspect this frequency range and supply the lower limit frequency value and upper limit frequency value we want to do an intensive search on. Another two parameters we migh want to tune in are number of phase and number of freuquencies. Higher number of phase and frequencies we use, larger will be the search space matrix of phase and frequencies and finer will be the searching but at the same time this also means more computation. So, we need to find the sweet spot. Initially, this code uses  8(number of phase points) by 512(number of frequency points) i.e. 4096 grid points to do low key search at different frequency range. Later, when optimal range of frequency to look at has been determined, it uses 128 by 8192 i.e. 1048576 grid points to compute detection statistics and find optimal values of phase and frequency. This can be done in line 132 where the call for the method 'ComputeDetection()' is made. Remember! don't forget to change the 'numof_freq' in if conditional statement in line # 103 to same value as you supply for the ComputeDetection() method in this call.
+ 
+ 
+ 
