@@ -31,7 +31,7 @@ iv) Final optimal values for phase and frequency calculated by the algorithm.
  HOW DO WE CALCULATE UPPER AND LOWER FREQUENCY BOUNDS TO SEARCH FOR?
  
 In any time series data lowest frequency will be at least one signal within half the total time period of the data so lower frequency bound is given by 
-2/(total timeperiod).  Upper frequency, in principle, can be that signal shows up in every time interval in which we are recording the data. But practically this 
+2/(total timeperiod).  Upper frequency, in principle, can be that signal which shows up in every time interval in which we are recording the data. But practically this 
 never happens especially when we are making observations for astronomical signal. So, we can assume some reasonable number of time interval in which signal might show up. Here, I have assumed that signal will show up once after every two time interval. This is very liberal assumption though. 
  
  HOW TO MANUALLY FINE TUNE OUR SEARCH?
