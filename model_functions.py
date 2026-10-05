@@ -229,7 +229,7 @@ def compute_statistic_overlap(times: float, phase_ref: float, frequency: float,
     (2016, arXiv:1610.06831).
     """
 
-    phases_model = compute_phase_pulse(times, phase_ref, frequency)
+    phases_model = compute_phase_pulse_generic(times, phase_ref, frequency)
     profile_model = compute_profile_vonMises(phases_model, duty_cycle=duty_cycle)
     overlap = np.sum(profile_model * profile_data)
 
